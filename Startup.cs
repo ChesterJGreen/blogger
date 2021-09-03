@@ -39,6 +39,8 @@ namespace blogger
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "blogger", Version = "v1" });
             });
             services.AddScoped<IDbConnection>(x => CreateDbConnection());
+            services.AddTransient<BlogsRepository>();
+            services.AddTransient<BlogsService>();
             
             services.AddScoped<AccountsRepository>();
             services.AddScoped<AccountService>();

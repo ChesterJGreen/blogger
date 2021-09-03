@@ -18,5 +18,15 @@ namespace blogger.Services
     {
         return _repo.Get();
     }
+
+    internal Blog Get(int id)
+    {
+      Blog blog = _repo.Get(id);
+      if (blog == null)
+      {
+          throw new Exception("Invalid Id");
+      }
+      return blog;
+    }
   }
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace blogger.Controllers
 {
     [ApiController]
-    [Route("/api/[controller")]
+    [Route("/api/[controller]")]
     public class BlogsController : ControllerBase
     {
         private readonly BlogsService _blogsService;
@@ -23,6 +23,20 @@ namespace blogger.Controllers
         {
              List<Blog> blogs = _blogsService.Get();
              return Ok(blogs);
+        }
+        catch (Exception err)
+        {
+            
+            return BadRequest(err.Message);
+        }
+    }
+    [HttpGet("{id}")]
+    public ActionResult<Blog> Get(int id)
+    {
+        try
+        {
+             Blog blog = _blogsService.Get(id);
+             return Ok(blog);
         }
         catch (Exception err)
         {

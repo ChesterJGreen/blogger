@@ -30,5 +30,22 @@ namespace blogger.Repositories
           return blogs;
       }, splitOn: "id").ToList();
     }
+
+    internal Blog Get(int id)
+    {
+      string sql = @"
+      SELECT
+      a.*,
+      b.*
+      FROM blogs b
+      JOIN accounts a ON b.creatorId = a.id
+      WHERE b.id = @id";
+      return _db.Query<Profile, Blog, Blog>(sql, (Profile, blog) =>
+      {
+          blog.Creator = Profile;
+          return blog;
+
+      }, new { id }, splitOn: "id").FirstOrDefault();
+    }
   }
 }
