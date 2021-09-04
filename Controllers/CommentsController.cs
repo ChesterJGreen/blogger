@@ -30,5 +30,19 @@ namespace blogger.Controllers
             return BadRequest(err.Message);
         }
     }
+    [HttpGet("{id}")]
+    public ActionResult<Comment> Get(int id)
+    {
+        try
+        {
+             Comment comment = _commentsService.Get(id);
+             return Ok(comment);
+        }
+        catch (Exception err)
+        {
+            
+            return BadRequest(err.Message);
+        }
+    }
   }
 }

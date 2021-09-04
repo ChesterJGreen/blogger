@@ -18,5 +18,15 @@ namespace blogger.Services
     {
         return _repo.Get();
     }
+
+    internal Comment Get(int id)
+    {
+      Comment comment = _repo.Get(id);
+      if ( comment == null)
+      {
+          throw new Exception("Invalid Id");
+      }
+      return comment;
+    }
   }
 }
