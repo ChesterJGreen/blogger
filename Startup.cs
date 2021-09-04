@@ -41,6 +41,8 @@ namespace blogger
             services.AddScoped<IDbConnection>(x => CreateDbConnection());
             services.AddTransient<BlogsRepository>();
             services.AddTransient<BlogsService>();
+            services.AddTransient<CommentsRepository>();
+            services.AddTransient<CommentsService>();
             
             services.AddScoped<AccountsRepository>();
             services.AddScoped<AccountService>();
