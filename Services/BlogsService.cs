@@ -28,5 +28,10 @@ namespace blogger.Services
       }
       return blog;
     }
+
+    internal Blog Create(Blog newBlog)
+    {
+      return _repo.Create(newBlog);
+    }
   }
 }

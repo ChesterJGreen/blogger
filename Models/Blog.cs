@@ -5,6 +5,8 @@ namespace blogger.Models
     public class Blog
     {
         public int Id { get; set; }
+        public string CreatedAt { get; set; }
+        public string UpdateddAt { get; set; }
         [Required]
         [MaxLength(20)]
         public string Title { get; set; }

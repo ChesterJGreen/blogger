@@ -31,6 +31,7 @@ namespace blogger.Repositories
       }, splitOn: "id").ToList();
     }
 
+
     internal Blog Get(int id)
     {
       string sql = @"
@@ -46,6 +47,18 @@ namespace blogger.Repositories
           return blog;
 
       }, new { id }, splitOn: "id").FirstOrDefault();
+    }
+    internal Blog Create(Blog newBlog)
+    {
+      string sql = @"
+    INSERT INTO blogs
+    (title, body, imgUrl, published, creatorId)
+    VALUES
+    (@Title, @Body, @ImgUrl, @Published, @CreatorId);
+    SELECT LAST_INSERT_ID();
+    ";
+    int id = _db.ExecuteScalar<int>(sql, newBlog);
+    return Get(id);
     }
   }
 }
