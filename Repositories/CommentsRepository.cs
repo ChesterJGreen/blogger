@@ -32,6 +32,7 @@ namespace blogger.Repositories
       }, splitOn: "id").ToList();
     }
 
+
     internal Comment Get(int id)
     {
       string sql = @"
@@ -48,5 +49,38 @@ namespace blogger.Repositories
           return Comment;
       }, new { id }, splitOn: "id").FirstOrDefault();
     }
+
+
+    internal Comment Create(Comment newComment)
+    {
+      string sql = @"
+      INSERT INTO comments
+      (body, blogId, creatorId)
+      VALUES
+      (@Body, @BlogId, @CreatorId);
+      SELECT LAST_INSERT_ID();
+      ";
+    int id = _db.ExecuteScalar<int>(sql, newComment);
+    return Get(id);
+
   }
+
+
+    internal Comment Update(Comment updatedComment)
+    {
+      string sql = @"
+        UPDATE comments
+        SET
+            body = @Body
+        WHERE id = @Id;
+        ";
+        _db.Execute(sql, updatedComment);
+        return updatedComment;
+    }
+    internal void Delete(int id)
+    {
+      string sql = "DELETE FROM comments WHERE id = @id LIMIT 1";
+      _db.Execute(sql, new { id });
+    }
+}
 }

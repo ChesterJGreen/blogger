@@ -28,5 +28,32 @@ namespace blogger.Services
       }
       return comment;
     }
+
+    internal Comment Create(Comment newComment)
+    {
+      return _repo.Create(newComment);
+    }
+
+    internal Comment Edit(Comment updatedComment)
+    {
+      Comment original = Get(updatedComment.Id);
+//FIXME either fix this in the conroller or service
+    //   if (original.CreatorId != userId)
+    //   {
+    //       throw new Exception("You do Not have permission to edit this comment");
+    //   }
+      updatedComment.Body = updatedComment.Body != null ? updatedComment.Body = original.Body;
+      return _repo.Update(updatedComment);
+    }
+
+    internal void Delete(int commentId, string userId)
+    {
+      Comment commentToDelete = Get(commentId);
+      if (commentToDelete.CreatorId != userId)
+      {
+          throw new Exception("You do Not have permission to delete this event");
+      }
+      _repo.Delete(commentId);
+    }
   }
 }

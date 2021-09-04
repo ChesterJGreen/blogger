@@ -36,6 +36,7 @@ namespace blogger.Services
 
     internal Blog Edit(Blog updatedBlog)
     {
+      //FIXME NOT SURE IF CREATOR IS EDITING THIS OR NOT? IN CONTROLLER OR SERVICE?
         Blog original = Get(updatedBlog.Id);
         updatedBlog.Title = updatedBlog.Title != null ? updatedBlog.Title : original.Title;
         updatedBlog.Body = updatedBlog.Body != null ? updatedBlog.Body : original.Body;
