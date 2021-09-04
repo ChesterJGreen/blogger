@@ -90,7 +90,7 @@ namespace blogger.Controllers
         {
              Account UserInfo = await HttpContext.GetUserInfoAsync<Account>();
             _blogsService.Delete(id, UserInfo.Id);
-            return Ok("Deleted ")
+            return Ok("Deleted ");
         }
         catch (Exception err)
         {
