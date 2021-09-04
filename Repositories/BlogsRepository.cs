@@ -60,5 +60,26 @@ namespace blogger.Repositories
     int id = _db.ExecuteScalar<int>(sql, newBlog);
     return Get(id);
     }
+
+    internal Blog Edit(Blog updatedBlog)
+    {
+      string sql = @"
+      UPDATE blogs
+      SET
+        title = @Title,
+        body = @Body,
+        imgUrl = @ImgUrl,
+        published = @Published,
+      WHERE id = @Id;
+      ";
+      _db.Execute(sql, updatedBlog);
+      return updatedBlog; 
+    }
+
+    internal void Delete(int id)
+    {
+       string sql = "DELETE FROM events WHERE id = @id LIMIT 1";
+       _db.Execute(sql, new { id }); 
+    }
   }
 }

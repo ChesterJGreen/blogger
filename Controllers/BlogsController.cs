@@ -64,6 +64,40 @@ namespace blogger.Controllers
             return BadRequest(err.Message);
         }
     }
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Blog>> EditAsync([FromBody] Blog updatedBlog, int id)
+    {
+        try
+        {
+            Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+            updatedBlog.CreatorId = userInfo.Id;
+             updatedBlog.Id = id;
+             Blog blog = _blogsService.Edit(updatedBlog);
+             return Ok(blog);
+        }
+        catch (Exception err)
+        {
+            
+            return BadRequest(err.Message);
+        }
+    }
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<ActionResult<string>> DeleteAsync(int id)
+    {
+        try
+        {
+             Account UserInfo = await HttpContext.GetUserInfoAsync<Account>();
+            _blogsService.Delete(id, UserInfo.Id);
+            return Ok("Deleted ")
+        }
+        catch (Exception err)
+        {
+            
+            return BadRequest(err.Message);
+        }
+    }
 
   }
 }

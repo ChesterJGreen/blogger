@@ -33,5 +33,25 @@ namespace blogger.Services
     {
       return _repo.Create(newBlog);
     }
+
+    internal Blog Edit(Blog updatedBlog)
+    {
+        Blog original = Get(updatedBlog.Id);
+        updatedBlog.Title = updatedBlog.Title != null ? updatedBlog.Title : original.Title;
+        updatedBlog.Body = updatedBlog.Body != null ? updatedBlog.Body : original.Body;
+        updatedBlog.ImgUrl = updatedBlog.ImgUrl != null ? updatedBlog.ImgUrl : original.ImgUrl;
+        updatedBlog.Published = updatedBlog.PublishedWasSet ? updatedBlog.Published : original.Published;
+      return _repo.Edit(updatedBlog);
+    }
+
+    internal void Delete(int blogId, string userId)
+    {
+      Blog blogToDelete = Get(blogId);
+      if (blogToDelete.CreatorId != userId)
+      {
+          throw new Exception("You do Not have permission to delete this blog");
+      }
+      _repo.Delete(blogId);
+    }
   }
 }
