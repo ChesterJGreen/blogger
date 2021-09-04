@@ -42,7 +42,7 @@ namespace blogger.Services
     //   {
     //       throw new Exception("You do Not have permission to edit this comment");
     //   }
-      updatedComment.Body = updatedComment.Body != null ? updatedComment.Body = original.Body;
+      updatedComment.Body = updatedComment.Body != null ? updatedComment.Body : original.Body;
       return _repo.Update(updatedComment);
     }
 
