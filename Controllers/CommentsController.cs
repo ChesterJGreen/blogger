@@ -66,20 +66,19 @@ namespace blogger.Controllers
     }
     [HttpPut("{id}")]
     [Authorize]
-    //FIXME how am I checking if the userId is the creatorId? Do i do it here or in the Service?
+
         public async Task<ActionResult<Comment>> Edit([FromBody] Comment updatedComment, int id)
     {
         try
         {
              Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-             updatedComment.Id = id;
-             
-            //  if (userInfo.Id = )
-            //  {
-
-            //  }
-             Comment comment = _commentsService.Edit(updatedComment);
+            Comment oldComment = _commentsService.Get(id);
+            if(oldComment.CreatorId == userInfo.Id && updatedComment.CreatorId == userInfo.Id && updatedComment.Id ==id)
+            {
+             Comment comment = _commentsService.Edit(oldComment, updatedComment);
              return Ok(comment);             
+
+            }
         }
         catch (Exception err)
         {

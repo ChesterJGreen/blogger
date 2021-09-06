@@ -33,17 +33,15 @@ namespace blogger.Services
     {
       return _repo.Create(newComment);
     }
-
     internal Comment Edit(Comment updatedComment)
     {
       Comment original = Get(updatedComment.Id);
-//FIXME either fix this in the conroller or service
-    //   if (original.CreatorId != userId)
-    //   {
-    //       throw new Exception("You do Not have permission to edit this comment");
-    //   }
+      return Edit(original, updatedComment);
+    }
+    internal Comment Edit(Comment original, Comment updatedComment)
+    {
       updatedComment.Body = updatedComment.Body != null ? updatedComment.Body : original.Body;
-      return _repo.Update(updatedComment);
+      return _repo.Edit(updatedComment);
     }
 
     internal void Delete(int commentId, string userId)
@@ -54,6 +52,18 @@ namespace blogger.Services
           throw new Exception("You do Not have permission to delete this event");
       }
       _repo.Delete(commentId);
+    }
+
+    internal List<Comment> GetAllByProfileId(string id)
+    
+      {
+      List<Comment> comments = _repo.GetByProfileId(id);
+      if(comments == null)
+      {
+        throw new Exception("No comments in this Profile");
+      }
+      return comments;
+    
     }
   }
 }

@@ -14,6 +14,7 @@ namespace blogger.Controllers
   {
    private readonly AccountService _accountService;
    private readonly BlogsService _blogsService;
+   private readonly CommentsService _commentsService;
 
     public ProfileController(AccountService accountService)
     {
@@ -22,6 +23,10 @@ namespace blogger.Controllers
     public ProfileController(BlogsService blogsService)
     {
         _blogsService = blogsService;
+    }
+    public ProfileController(CommentsService commentsService)
+    {
+        _commentsService = commentsService;
     }
 
     [HttpGet("{id}")]
@@ -41,7 +46,7 @@ namespace blogger.Controllers
     }
     [HttpGet("{id}/blogs")]
     // proof of routing
-    public async Task<ActionResult<Profile>> GetBlogsByProfileId(string id)
+    public async Task<ActionResult<Blog>> GetBlogsByProfileId(string id)
     {
         try
         {
@@ -60,6 +65,28 @@ namespace blogger.Controllers
         catch (Exception err)
         {            
             return BadRequest(err.Message);
+        }
+    }
+    [HttpGet("{id}/comments")]
+    public async Task<ActionResult<Comment>> GetCommentsByProfileId(string id)
+    {
+        try
+        {
+             Account UserInfo = await HttpContext.GetUserInfoAsync<Account>();
+             if( UserInfo.Id != null)
+             {
+             List<Comment> comments = _commentsService.GetAllByProfileId(id);
+             return Ok(comments);
+             }
+             else 
+             {
+                 throw new Exception("profile does not exist");
+             }
+        }
+        catch (System.Exception)
+        {
+            
+            throw;
         }
     }
   }

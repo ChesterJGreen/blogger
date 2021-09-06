@@ -66,7 +66,7 @@ namespace blogger.Controllers
     }
     [HttpPut("{id}")]
     [Authorize]
-    public async Task<ActionResult<Blog>> EditAsync([FromBody] Blog updatedBlog, int id)
+    public async Task<ActionResult<Blog>> Edit([FromBody] Blog updatedBlog, int id)
     {
         try
         {

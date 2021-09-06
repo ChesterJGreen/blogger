@@ -66,7 +66,7 @@ namespace blogger.Repositories
   }
 
 
-    internal Comment Update(Comment updatedComment)
+    internal Comment Edit(Comment updatedComment)
     {
       string sql = @"
         UPDATE comments
@@ -77,6 +77,24 @@ namespace blogger.Repositories
         _db.Execute(sql, updatedComment);
         return updatedComment;
     }
+
+    internal List<Comment> GetByProfileId(string id)
+    {
+      string sql = @"
+      SELECT
+      a.*,
+      c.*
+      FROM comments c
+      JOIN accounts a ON c.creatorId = a.id
+      WHERE c.id = @id";
+      return _db.Query<Profile, Comment, Comment>(sql, (Profile, comments) =>
+      {
+          comments.Creator = Profile;
+          return comments;
+
+      }, new { id }, splitOn: "id").ToList();
+    }
+
     internal void Delete(int id)
     {
       string sql = "DELETE FROM comments WHERE id = @id LIMIT 1";
