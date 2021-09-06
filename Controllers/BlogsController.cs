@@ -70,16 +70,23 @@ namespace blogger.Controllers
     {
         try
         {
-            //FIXME DO I HAVE A QUALIFIER FOR IF THE CREATOR IS THE ONE EDITING THIS BLOG? EITHER FIX HERE OR IN SERVICE
             Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-            updatedBlog.CreatorId = userInfo.Id;
-             updatedBlog.Id = id;
-             Blog blog = _blogsService.Edit(updatedBlog);
-             return Ok(blog);
+            Blog oldBlog = _blogsService.Get(id);
+
+            if (oldBlog.CreatorId == userInfo.Id && updatedBlog.CreatorId == userInfo.Id && updatedBlog.Id == id)
+            {
+                Blog blog = _blogsService.Edit(oldBlog, updatedBlog);
+                return Ok(blog);
+            }
+            else 
+            {
+                // TODO add error message ...
+                return BadRequest();
+            }
+             
         }
         catch (Exception err)
         {
-            
             return BadRequest(err.Message);
         }
     }

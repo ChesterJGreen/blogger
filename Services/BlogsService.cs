@@ -29,6 +29,15 @@ namespace blogger.Services
       return blog;
     }
 
+    internal List<Blog> GetAllByProfileId(string id)
+    {
+      List<Blog> blogs = _repo.GetByProfileId(id);
+      if(blogs == null)
+      {
+        throw new Exception("No blogs in this Profile");
+      }
+      return blogs;
+    }
     internal Blog Create(Blog newBlog)
     {
       return _repo.Create(newBlog);
@@ -36,14 +45,18 @@ namespace blogger.Services
 
     internal Blog Edit(Blog updatedBlog)
     {
-      //FIXME NOT SURE IF CREATOR IS EDITING THIS OR NOT? IN CONTROLLER OR SERVICE?
         Blog original = Get(updatedBlog.Id);
+        return Edit(original, updatedBlog);
+    }
+    internal Blog Edit(Blog original, Blog updatedBlog)
+    {
         updatedBlog.Title = updatedBlog.Title != null ? updatedBlog.Title : original.Title;
         updatedBlog.Body = updatedBlog.Body != null ? updatedBlog.Body : original.Body;
         updatedBlog.ImgUrl = updatedBlog.ImgUrl != null ? updatedBlog.ImgUrl : original.ImgUrl;
         updatedBlog.Published = updatedBlog.PublishedWasSet ? updatedBlog.Published : original.Published;
-      return _repo.Edit(updatedBlog);
+        return _repo.Edit(updatedBlog);
     }
+
 
     internal void Delete(int blogId, string userId)
     {

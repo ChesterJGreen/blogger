@@ -31,6 +31,22 @@ namespace blogger.Repositories
       }, splitOn: "id").ToList();
     }
 
+    internal List<Blog> GetByProfileId(string id)
+    {
+      string sql = @"
+      SELECT
+      a.*,
+      b.*
+      FROM blogs b
+      JOIN accounts a ON b.creatorId = a.id
+      WHERE b.id = @id";
+      return _db.Query<Profile, Blog, Blog>(sql, (Profile, blogs) =>
+      {
+          blogs.Creator = Profile;
+          return blogs;
+
+      }, new { id }, splitOn: "id").ToList();
+    }
 
     internal Blog Get(int id)
     {

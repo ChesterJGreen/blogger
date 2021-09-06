@@ -21,12 +21,16 @@ namespace blogger.Services
         }
         internal Account GetOrCreateProfile(Account userInfo)
         {
-            Account profile = _repo.GetById(userInfo.Id);
+            Account profile = GetProfile(userInfo.Id);
             if (profile == null)
             {
                 return _repo.Create(userInfo);
             }
             return profile;
+        }
+        internal Account GetProfile(string id) 
+        {
+            return _repo.GetById(id);
         }
 
         internal Account Edit(Account editData, string userEmail)
