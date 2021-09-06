@@ -52,7 +52,7 @@ namespace blogger.Controllers
         }
     }
     [HttpGet("{id}/comments")]
-    public ActionResult<Comment> GetCommentByBlogId(int id)
+    public ActionResult<List<Comment>>GetCommentByBlogId(int id)
     {
         try
         {
