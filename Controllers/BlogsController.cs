@@ -16,14 +16,13 @@ namespace blogger.Controllers
         private readonly BlogsService _blogsService;
         private readonly CommentsService _commentsService;
 
-    public BlogsController(BlogsService blogsService)
+    public BlogsController(BlogsService blogsService, CommentsService commentsService)
     {
       _blogsService = blogsService;
+      _commentsService = commentsService;
+
     }
-    // public BlogsController(CommentsService commentsService)
-    // {
-    //   _commentsService = commentsService;
-    // }
+   
     [HttpGet]
     public ActionResult<List<Blog>> Get()
     {

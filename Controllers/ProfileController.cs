@@ -16,19 +16,13 @@ namespace blogger.Controllers
    private readonly BlogsService _blogsService;
    private readonly CommentsService _commentsService;
 
-    public ProfileController(AccountService accountService)
+    public ProfileController(AccountService accountService, BlogsService blogsService, CommentsService commentsService)
     {
       _accountService = accountService;
+      _blogsService = blogsService;
+      _commentsService = commentsService;
     }
-    // public ProfileController(BlogsService blogsService)
-    // {
-    //     _blogsService = blogsService;
-    // }
-    // public ProfileController(CommentsService commentsService)
-    // {
-    //     _commentsService = commentsService;
-    // }
-
+ 
     [HttpGet("{id}")]
     public async Task<ActionResult<Profile>> Get(string id)
     {
@@ -45,7 +39,6 @@ namespace blogger.Controllers
         }
     }
     [HttpGet("{id}/blogs")]
-    // proof of routing
     public async Task<ActionResult<Blog>> GetBlogsByProfileId(string id)
     {
         try
