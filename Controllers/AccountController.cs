@@ -17,21 +17,15 @@ namespace blogger.Controllers
         private readonly BlogsService _blogsService;
         private readonly CommentsService _commentsService;
 
-        public AccountController(AccountService accountService)
+        public AccountController(AccountService accountService, BlogsService blogsService, CommentsService commentsService)
         {
             _accountService = accountService;
+             _blogsService = blogsService;
+             _commentsService = commentsService;
         }
-        public AccountController(BlogsService blogsService)
-        {
-            _blogsService = blogsService;
-        }
-        public AccountController(CommentsService commentsService)
-        {
-            _commentsService = commentsService;
-        }
-
+       //TODO - remove comments on authorize
         [HttpGet]
-        [Authorize]
+        // [Authorize]
         public async Task<ActionResult<Account>> Get()
         {
             try
@@ -45,7 +39,7 @@ namespace blogger.Controllers
             }
         }
         [HttpGet("blogs")]
-        [Authorize]
+        // [Authorize]
         public async Task<ActionResult<Blog>> Get(string id)
         {
              try
@@ -68,7 +62,7 @@ namespace blogger.Controllers
         }
         }
          [HttpGet("comments")]
-         [Authorize]
+        //  [Authorize]
     public async Task<ActionResult<Comment>> GetCommentsByProfileId(string id)
     {
         try
@@ -91,7 +85,7 @@ namespace blogger.Controllers
         }
     }
     [HttpPut]
-    [Authorize]
+    // [Authorize]
     public async Task<ActionResult<Account>> Edit([FromBody] Account editData, string id )
     {
         try
