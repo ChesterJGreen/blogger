@@ -95,6 +95,22 @@ namespace blogger.Repositories
       }, new { id }, splitOn: "id").ToList();
     }
 
+    internal List<Comment> GetCommentsByBlogId(int id)
+  {
+      string sql = @"
+      SELECT 
+        a.*,
+        c.*
+      FROM comments c
+      JOIN accounts a ON c.creatorId = a.id
+      ";
+      return _db.Query<Profile, Comment, Comment>(sql, (profile, comments) =>
+      {
+          comments.Creator = profile;
+          return comments;
+      }, splitOn: "id").ToList();
+    }
+
     internal void Delete(int id)
     {
       string sql = "DELETE FROM comments WHERE id = @id LIMIT 1";

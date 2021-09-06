@@ -14,11 +14,16 @@ namespace blogger.Controllers
     public class BlogsController : ControllerBase
     {
         private readonly BlogsService _blogsService;
+        private readonly CommentsService _commentsService;
 
     public BlogsController(BlogsService blogsService)
     {
       _blogsService = blogsService;
     }
+    // public BlogsController(CommentsService commentsService)
+    // {
+    //   _commentsService = commentsService;
+    // }
     [HttpGet]
     public ActionResult<List<Blog>> Get()
     {
@@ -40,6 +45,29 @@ namespace blogger.Controllers
         {
              Blog blog = _blogsService.Get(id);
              return Ok(blog);
+        }
+        catch (Exception err)
+        {
+            
+            return BadRequest(err.Message);
+        }
+    }
+    [HttpGet("{id}/comments")]
+    public ActionResult<Comment> GetCommentByBlogId(int id)
+    {
+        try
+        {
+            Blog blog = _blogsService.Get(id);
+            if( blog != null)
+            {
+
+             List<Comment> comments = _commentsService.GetCommentsByBlogId(id);
+             return Ok(comments);
+            }
+            else
+            {
+                return BadRequest("That Blog does not exist");
+            }
         }
         catch (Exception err)
         {
@@ -80,8 +108,7 @@ namespace blogger.Controllers
             }
             else 
             {
-                // TODO add error message ...
-                return BadRequest();
+                return BadRequest("You do not have permission to edit");
             }
              
         }

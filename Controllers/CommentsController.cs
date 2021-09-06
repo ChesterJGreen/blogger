@@ -66,7 +66,6 @@ namespace blogger.Controllers
     }
     [HttpPut("{id}")]
     [Authorize]
-
         public async Task<ActionResult<Comment>> Edit([FromBody] Comment updatedComment, int id)
     {
         try
@@ -79,6 +78,10 @@ namespace blogger.Controllers
              return Ok(comment);             
 
             }
+            else
+            {
+                return BadRequest("This Data doesn't match up");
+            }
         }
         catch (Exception err)
         {
@@ -86,7 +89,7 @@ namespace blogger.Controllers
             return BadRequest(err.Message);
         }
     }
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize]
     public async Task<ActionResult<string>> Delete(int id)
     {

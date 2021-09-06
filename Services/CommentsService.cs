@@ -65,5 +65,15 @@ namespace blogger.Services
       return comments;
     
     }
+
+    internal List<Comment> GetCommentsByBlogId(int id)
+    {
+    List<Comment> comments = _repo.GetCommentsByBlogId(id);
+      if ( comments == null)
+      {
+          throw new Exception("Invalid Id");
+      }
+      return comments;
+    }
   }
 }

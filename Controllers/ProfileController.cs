@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace blogger.Controllers
 {
   [ApiController]
-  [Route("[controller]")]
+  [Route("/api/[controller]")]
   public class ProfileController : ControllerBase
   {
    private readonly AccountService _accountService;
@@ -20,14 +20,14 @@ namespace blogger.Controllers
     {
       _accountService = accountService;
     }
-    public ProfileController(BlogsService blogsService)
-    {
-        _blogsService = blogsService;
-    }
-    public ProfileController(CommentsService commentsService)
-    {
-        _commentsService = commentsService;
-    }
+    // public ProfileController(BlogsService blogsService)
+    // {
+    //     _blogsService = blogsService;
+    // }
+    // public ProfileController(CommentsService commentsService)
+    // {
+    //     _commentsService = commentsService;
+    // }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Profile>> Get(string id)
