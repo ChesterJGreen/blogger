@@ -100,17 +100,17 @@ namespace blogger.Repositories
     //TODO i'm having trouble with this syntax... i want to select one blog, but select all comments and match up the comments.blogId with the b.id
       string sql = @"
       SELECT 
-        c.*,
-        b.*
-      FROM blogs b
-      JOIN comments c ON b.Id = c.id
-      WHERE comments.blogId = @id;
+        b.*,
+        c.*
+      FROM comments c
+      JOIN blogs b ON c.blogId = b.id
+      WHERE c.blogId = @id;
       ";
-      return _db.Query<Profile, Comment, Comment>(sql, (profile, comments) =>
+      return _db.Query<Profile, Comment, Comment>(sql, (Profile, comments) =>
       {
-          comments.Creator = profile;
+          comments.Creator = Profile;
           return comments;
-      }, splitOn: "blogId").ToList();
+      }, splitOn: "id").ToList();
     }
 
     internal void Delete(int id)
