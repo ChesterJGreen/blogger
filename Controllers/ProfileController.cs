@@ -24,11 +24,10 @@ namespace blogger.Controllers
     }
  
     [HttpGet("{id}")]
-    public async Task<ActionResult<Profile>> Get(string id)
+    public ActionResult<Profile> Get(string id)
     {
         try
         {
-             Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
              Profile profile = _accountService.GetProfile(id);
              return Ok(profile);
              
@@ -39,21 +38,12 @@ namespace blogger.Controllers
         }
     }
     [HttpGet("{id}/blogs")]
-    public async Task<ActionResult<Blog>> GetBlogsByProfileId(string id)
+    public ActionResult<List<Blog>> GetBlogsByProfileId(string id)
     {
         try
         {
-             Account UserInfo = await HttpContext.GetUserInfoAsync<Account>();
-             if( UserInfo.Id != null)
-             {
-             List<Blog> blogs = _blogsService.GetAllByProfileId(id);
-             return Ok(blogs);
-             }
-             else 
-             {
-                 throw new Exception("profile does not exist");
-             }
-             
+            List<Blog> blogs = _blogsService.GetAllByProfileId(id);
+            return Ok(blogs);             
         }
         catch (Exception err)
         {            
@@ -61,25 +51,16 @@ namespace blogger.Controllers
         }
     }
     [HttpGet("{id}/comments")]
-    public async Task<ActionResult<Comment>> GetCommentsByProfileId(string id)
+    public ActionResult<Comment> GetCommentsByProfileId(string id)
     {
         try
         {
-             Account UserInfo = await HttpContext.GetUserInfoAsync<Account>();
-             if( UserInfo.Id != null)
-             {
-             List<Comment> comments = _commentsService.GetAllByProfileId(id);
-             return Ok(comments);
-             }
-             else 
-             {
-                 throw new Exception("profile does not exist");
-             }
+            List<Comment> comments = _commentsService.GetAllByProfileId(id);
+            return Ok(comments);
         }
-        catch (System.Exception)
+        catch (Exception err)
         {
-            
-            throw;
+            return BadRequest(err.Message);
         }
     }
   }

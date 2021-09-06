@@ -86,7 +86,7 @@ namespace blogger.Repositories
       c.*
       FROM comments c
       JOIN accounts a ON c.creatorId = a.id
-      WHERE c.id = @id";
+      WHERE c.creatorId = @id";
       return _db.Query<Profile, Comment, Comment>(sql, (Profile, comments) =>
       {
           comments.Creator = Profile;
