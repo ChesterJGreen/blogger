@@ -16,13 +16,14 @@ namespace blogger.Services
 
     internal List<Blog> Get()
     {
-        return _repo.Get();
+        List<Blog> blogs = _repo.GetAll();
+        return blogs.FindAll(b => b.Published == true);
     }
 
-    internal Blog Get(int id)
+    internal Blog Get(int id, bool checkPublished = true)
     {
-      Blog blog = _repo.Get(id);
-      if (blog == null)
+      Blog blog = _repo.GetById(id);
+      if (blog == null || (checkPublished && blog.Published == false))
       {
           throw new Exception("Invalid Id");
       }
@@ -45,22 +46,27 @@ namespace blogger.Services
 
     internal Blog Edit(Blog updatedBlog)
     {
-        Blog original = Get(updatedBlog.Id);
-        return Edit(original, updatedBlog);
-    }
-    internal Blog Edit(Blog original, Blog updatedBlog)
-    {
-        updatedBlog.Title = updatedBlog.Title != null ? updatedBlog.Title : original.Title;
-        updatedBlog.Body = updatedBlog.Body != null ? updatedBlog.Body : original.Body;
-        updatedBlog.ImgUrl = updatedBlog.ImgUrl != null ? updatedBlog.ImgUrl : original.ImgUrl;
-        updatedBlog.Published = updatedBlog.PublishedWasSet ? updatedBlog.Published : original.Published;
-        return _repo.Edit(updatedBlog);
+        Blog original = Get(updatedBlog.Id, false);
+        if(original.CreatorId != updatedBlog.CreatorId){
+          throw new Exception("Invalid Access");
+        }
+        original.Title = updatedBlog.Title.Length > 0 ? updatedBlog.Title : original.Title;
+        original.Body = updatedBlog.Body.Length > 0 ? updatedBlog.Body : original.Body;
+        original.ImgUrl = updatedBlog.ImgUrl != null && updatedBlog.ImgUrl.Length > 0 ? updatedBlog.ImgUrl : original.ImgUrl;
+        original.Published = updatedBlog.Published != null ? updatedBlog.Published : original.Published;
+        _repo.Edit(updatedBlog);
+        return original;
     }
 
+    // internal List<Blog> GetAllBlogsByCreator(string id, false)
+    // {
+    //   List<Blog> blogs = _repo.GetAll(creatorId);
+    //   if (careIfPublished == false)
+    // }
 
     internal void Delete(int blogId, string userId)
     {
-      Blog blogToDelete = Get(blogId);
+      Blog blogToDelete = Get(blogId, false);
       if (blogToDelete.CreatorId != userId)
       {
           throw new Exception("You do Not have permission to delete this blog");

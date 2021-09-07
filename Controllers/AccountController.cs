@@ -39,29 +39,24 @@ namespace blogger.Controllers
             }
         }
 
-        [HttpGet("blogs")]
-        [Authorize]
-        public async Task<ActionResult<Blog>> Get(string id)
-        {
-             try
-        {
-             Account UserInfo = await HttpContext.GetUserInfoAsync<Account>();
-             if( UserInfo.Id != null)
-             {
-             List<Blog> blogs = _blogsService.GetAllByProfileId(id);
-             return Ok(blogs);
-             }
-             else 
-             {
-                 throw new Exception("profile does not exist");
-             }
+    //     [HttpGet("blogs")]
+    //     [Authorize]
+    //     public async Task<ActionResult<List<Blog>>> GetBlogs(string id)
+    //     {
+    //          try
+    //     {
+    //          Account UserInfo = await HttpContext.GetUserInfoAsync<Account>();
+    //          List<Blog> blogs = _blogsService.GetAllBlogsByCreator(UserInfo.Id, false);
+    //          return Ok(blogs);
+    //      }
+    //     catch (Exception err)
+            
              
-        }
-        catch (Exception err)
-        {            
-            return BadRequest(err.Message);
-        }
-        }
+        
+    //     {            
+    //         return BadRequest(err.Message);
+    //     }
+    // }
 
         [HttpGet("comments")]
         [Authorize]

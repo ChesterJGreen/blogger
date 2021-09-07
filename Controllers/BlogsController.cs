@@ -102,7 +102,8 @@ namespace blogger.Controllers
 
             if (oldBlog.CreatorId == userInfo.Id && updatedBlog.CreatorId == userInfo.Id && updatedBlog.Id == id)
             {
-                Blog blog = _blogsService.Edit(oldBlog, updatedBlog);
+                updatedBlog.Id = id;
+                Blog blog = _blogsService.Edit(updatedBlog);
                 return Ok(blog);
             }
             else 

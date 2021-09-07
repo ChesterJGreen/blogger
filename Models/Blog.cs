@@ -17,20 +17,8 @@ namespace blogger.Models
         
         public string CreatorId { get; set; }
         public Profile Creator { get; set; }
-        private bool _published;
-        internal bool PublishedWasSet { get; set; }
-        public bool Published
-        {
-            get
-            {
-                return _published;
-            }
-            set
-            {
-             _published = value;
-            PublishedWasSet = true;
-            }
-         }
+        public bool? Published { get; set; }
+       
         
     }
 }

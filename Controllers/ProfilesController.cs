@@ -10,13 +10,13 @@ namespace blogger.Controllers
 {
   [ApiController]
   [Route("/api/[controller]")]
-  public class ProfileController : ControllerBase
+  public class ProfilesController : ControllerBase
   {
    private readonly AccountService _accountService;
    private readonly BlogsService _blogsService;
    private readonly CommentsService _commentsService;
 
-    public ProfileController(AccountService accountService, BlogsService blogsService, CommentsService commentsService)
+    public ProfilesController(AccountService accountService, BlogsService blogsService, CommentsService commentsService)
     {
       _accountService = accountService;
       _blogsService = blogsService;
@@ -28,8 +28,8 @@ namespace blogger.Controllers
     {
         try
         {
-             Profile profile = _accountService.GetProfile(id);
-             return Ok(profile);
+             Profile profile = _accountService.GetProfileById(id);
+             return profile;
              
         }
         catch (Exception err)
@@ -43,7 +43,7 @@ namespace blogger.Controllers
         try
         {
             List<Blog> blogs = _blogsService.GetAllByProfileId(id);
-            return Ok(blogs);             
+            return blogs;             
         }
         catch (Exception err)
         {            

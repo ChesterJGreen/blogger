@@ -11,9 +11,9 @@ namespace blogger.Services
             _repo = repo;
         }
 
-        internal string GetProfileEmailById(string id)
+        internal Profile GetProfileById(string id)
         {
-            return _repo.GetById(id).Email;
+            return _repo.GetById(id);
         }
         internal Account GetProfileByEmail(string email)
         {

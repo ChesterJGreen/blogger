@@ -16,7 +16,7 @@ namespace blogger.Repositories
       _db = db;
     }
 
-    internal List<Blog> Get()
+    internal List<Blog> GetAll()
     {
       string sql = @"
       SELECT
@@ -29,6 +29,23 @@ namespace blogger.Repositories
           blogs.Creator = Profile;
           return blogs;
       }, splitOn: "id").ToList();
+    }
+
+    internal Blog GetById(int id)
+    {
+      string sql = @"
+      SELECT
+      a.*,
+      b.*
+      FROM blogs b
+      JOIN accounts a ON b.creatorId = a.id
+      WHERE b.id = @id";
+      return _db.Query<Profile, Blog, Blog>(sql, (Profile, blog) =>
+      {
+          blog.Creator = Profile;
+          return blog;
+
+      }, new { id }, splitOn: "id").FirstOrDefault();
     }
 
     internal List<Blog> GetByProfileId(string id)
@@ -47,23 +64,6 @@ namespace blogger.Repositories
 
       }, new { id }, splitOn: "id").ToList();
     }
-
-    internal Blog Get(int id)
-    {
-      string sql = @"
-      SELECT
-      a.*,
-      b.*
-      FROM blogs b
-      JOIN accounts a ON b.creatorId = a.id
-      WHERE b.id = @id";
-      return _db.Query<Profile, Blog, Blog>(sql, (Profile, blog) =>
-      {
-          blog.Creator = Profile;
-          return blog;
-
-      }, new { id }, splitOn: "id").FirstOrDefault();
-    }
     internal Blog Create(Blog newBlog)
     {
       string sql = @"
@@ -74,10 +74,10 @@ namespace blogger.Repositories
     SELECT LAST_INSERT_ID();
     ";
     int id = _db.ExecuteScalar<int>(sql, newBlog);
-    return Get(id);
+    return GetById(id);
     }
 
-    internal Blog Edit(Blog updatedBlog)
+    internal Blog Edit(Blog original)
     {
       string sql = @"
       UPDATE blogs
@@ -88,13 +88,13 @@ namespace blogger.Repositories
         published = @Published,
       WHERE id = @Id;
       ";
-      _db.Execute(sql, updatedBlog);
-      return updatedBlog; 
+      _db.Execute(sql, original);
+      return GetById(original.Id); 
     }
 
     internal void Delete(int id)
     {
-       string sql = "DELETE FROM events WHERE id = @id LIMIT 1";
+       string sql = "DELETE FROM blogs WHERE id = @id LIMIT 1";
        _db.Execute(sql, new { id }); 
     }
   }

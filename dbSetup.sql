@@ -12,9 +12,9 @@ CREATE TABLE blogs(
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
     updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
     title varchar(255) comment 'title of blog',
-    body varchar(255) comment 'body of blog',
+    body varchar(5000) comment 'body of blog',
     imgUrl varchar(255) comment 'imgUrl of blog',
-    published TINYINT comment 'is published blog',
+    published TINYINT DEFAULT true comment 'is published blog',
     creatorId VARCHAR(255) comment 'creatorId of blog',
     FOREIGN KEY (creatorId) REFERENCES accounts(id) ON DELETE CASCADE
 )default charset utf8;
@@ -33,3 +33,4 @@ CREATE TABLE comments(
 
 
 DROP TABLE blogs;
+DROP TABLE comments;
