@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS accounts(
 CREATE TABLE blogs(  
     id int NOT NULL primary key AUTO_INCREMENT comment 'primary key',
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Time Created',
-  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last Update',
     title varchar(255) comment 'title of blog',
     body varchar(255) comment 'body of blog',
     imgUrl varchar(255) comment 'imgUrl of blog',

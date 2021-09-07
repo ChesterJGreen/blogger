@@ -11,12 +11,12 @@ namespace blogger.Models
         [Required]
         [MaxLength(20)]
         public string Title { get; set; }
+        [Required]
         public string Body { get; set; }
         public string ImgUrl { get; set; }
         
         public string CreatorId { get; set; }
         public Profile Creator { get; set; }
-        //NOTE i need help understanding this Below
         private bool _published;
         internal bool PublishedWasSet { get; set; }
         public bool Published

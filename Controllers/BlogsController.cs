@@ -74,10 +74,9 @@ namespace blogger.Controllers
             return BadRequest(err.Message);
         }
     }
-    //TODO remove comments on Authorize
     [HttpPost]
-    // [Authorize]
-    public async Task<ActionResult<Blog>> CreateAsync([FromBody] Blog newBlog)
+    [Authorize]    
+    public async Task<ActionResult<Blog>> Create([FromBody] Blog newBlog)
     {
         try
         {

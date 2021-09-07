@@ -33,11 +33,7 @@ namespace blogger
         {
             ConfigureCors(services);
             ConfigureAuth(services);
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "blogger", Version = "v1" });
-            });
+            
             services.AddScoped<IDbConnection>(x => CreateDbConnection());
             services.AddTransient<BlogsRepository>();
             services.AddTransient<BlogsService>();
@@ -46,6 +42,13 @@ namespace blogger
             
             services.AddScoped<AccountsRepository>();
             services.AddScoped<AccountService>();
+            
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "blogger", Version = "v1" });
+            });
+
         }
 
         private void ConfigureCors(IServiceCollection services)

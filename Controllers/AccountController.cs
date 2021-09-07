@@ -23,9 +23,9 @@ namespace blogger.Controllers
              _blogsService = blogsService;
              _commentsService = commentsService;
         }
-       //TODO - remove comments on authorize
+
         [HttpGet]
-        // [Authorize]
+        [Authorize]
         public async Task<ActionResult<Account>> Get()
         {
             try
@@ -38,8 +38,9 @@ namespace blogger.Controllers
                 return BadRequest(e.Message);
             }
         }
+
         [HttpGet("blogs")]
-        // [Authorize]
+        [Authorize]
         public async Task<ActionResult<Blog>> Get(string id)
         {
              try
@@ -61,32 +62,34 @@ namespace blogger.Controllers
             return BadRequest(err.Message);
         }
         }
-         [HttpGet("comments")]
-        //  [Authorize]
-    public async Task<ActionResult<Comment>> GetCommentsByProfileId(string id)
-    {
-        try
+
+        [HttpGet("comments")]
+        [Authorize]
+        public async Task<ActionResult<Comment>> GetCommentsByProfileId(string id)
         {
-             Account UserInfo = await HttpContext.GetUserInfoAsync<Account>();
-             if( UserInfo.Id != null)
-             {
-             List<Comment> comments = _commentsService.GetAllByProfileId(id);
-             return Ok(comments);
-             }
-             else 
-             {
-                 throw new Exception("profile does not exist");
-             }
+            try
+            {
+                Account UserInfo = await HttpContext.GetUserInfoAsync<Account>();
+                if( UserInfo.Id != null)
+                {
+                List<Comment> comments = _commentsService.GetAllByProfileId(id);
+                return Ok(comments);
+                }
+                else 
+                {
+                    throw new Exception("profile does not exist");
+                }
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
+            }
         }
-        catch (System.Exception)
-        {
-            
-            throw;
-        }
-    }
-    [HttpPut]
-    // [Authorize]
-    public async Task<ActionResult<Account>> Edit([FromBody] Account editData, string id )
+
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult<Account>> Edit([FromBody] Account editData, string id )
     {
         try
         {

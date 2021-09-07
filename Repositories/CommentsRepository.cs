@@ -110,7 +110,7 @@ namespace blogger.Repositories
       {
           comments.Creator = Profile;
           return comments;
-      }, splitOn: "id").ToList();
+      }, new { id }, splitOn: "id").ToList();
     }
 
     internal void Delete(int id)
